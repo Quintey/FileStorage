@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <style>
+        body {
+           
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.Raw(@Html.ActionLink("[replacetext]", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }).ToHtmlString().Replace("[replacetext]", "<img src =\"/fonts/j73zeo5bptto.png\" />"))
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
+
+
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li>
+                            @Html.ActionLink("Администрирование", "Administr", "Admin")
+                        </li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div>
+        <center><h1>Панель админиcтратора</h1></center>
+
+        <div class="row ">
+            <div class=" col-md-2 adm-nav-pan ">
+                <ul>
+                    <li>
+                        @Html.ActionLink("Зарегистрированные пользователи", "Administr", "Admin")
+                    </li>
+                    <hr />
+                    <li>
+                        @Html.ActionLink("Результаты по ширине стенки", "AdministrShirinaResult", "Admin")
+                    </li>
+                    <hr />
+                    <li>
+                        @Html.ActionLink("Результаты по отказам элементов", "AdministrShirinaResult", "Admin")
+                    </li>
+                    <hr />
+                    <li>
+                        @Html.ActionLink("Результаты по хар-кам трещиностойкости", "AdministrShirinaResult", "Admin")
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-2">
+                <table id="jqg"></table>
+                <div id="jpager"></div>
+            </div>
+        </div>
+        @RenderBody()
+
+        <footer id="footer" class=" footer navbar-fixed-bottom">
+            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
+        </footer>
+    </div>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿@model FileStorage.Models.File
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("Create", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+<fieldset>
+    <legend>Добавить </legend>
+    
+
+    <div class="editor-label">Файл </div>
+    <div class="editor-field">
+        <input type="file" name="uploadFile" />
+    </div>
+
+    <p>
+        <input type="submit" value="Добавить" />
+    </p>
+</fieldset>
+}
+
+<div>
+    @Html.ActionLink("Вернуться к списку", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
