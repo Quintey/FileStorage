@@ -1,31 +1,48 @@
 ﻿@model FileStorage.Models.File
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Загрузка";
 }
 
-@using (Html.BeginForm("Create", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.ValidationSummary(true)
-<fieldset>
-    <legend>Добавить </legend>
-    
 
-    <div class="editor-label">Файл </div>
-    <div class="editor-field">
-        <input type="file" name="uploadFile" />
+
+
+<div style="margin-top:20px">
+    @using (Html.BeginForm("Create", "Home", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return checkSize(20971520)" }))
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            @Html.Label("Максимальный размер файла не должен превышать 20МБ")
+            <div  class="editor-field">
+                <h4>  <input id="imagefile" type="file" name="uploadFile" /></h4>
+            </div>
+            <p>
+                <h4> <input type="submit" value="Загрузить" /></h4>
+            </p>
+        </fieldset>
+    }
+
+    <div>
+        @Html.ActionLink("Вернуться к списку", "Index")
     </div>
-
-    <p>
-        <input type="submit" value="Добавить" />
-    </p>
-</fieldset>
-}
-
-<div>
-    @Html.ActionLink("Вернуться к списку", "Index")
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    function checkSize(max_img_size) {
+        var input = document.getElementById("imagefile");
+        // check for browser support (may need to be modified)
+        if (input.files && input.files.length == 1) {
+            if (input.files[0].size > max_img_size) {
+                alert("Файл не должен превышать "
+                    + (max_img_size / 1024 / 1024) + "MB!");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
 }

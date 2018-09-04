@@ -28,12 +28,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.Raw(@Html.ActionLink("[replacetext]", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }).ToHtmlString().Replace("[replacetext]", "<img src =\"/fonts/j73zeo5bptto.png\" />"))
+                @Html.ActionLink("File Storage", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Последние файлы", "Index", "Home")</li>
 
 
                     @if (User.IsInRole("admin"))
@@ -57,22 +57,12 @@
                         @Html.ActionLink("Зарегистрированные пользователи", "Administr", "Admin")
                     </li>
                     <hr />
-                    <li>
-                        @Html.ActionLink("Результаты по ширине стенки", "AdministrShirinaResult", "Admin")
-                    </li>
-                    <hr />
-                    <li>
-                        @Html.ActionLink("Результаты по отказам элементов", "AdministrShirinaResult", "Admin")
-                    </li>
-                    <hr />
-                    <li>
-                        @Html.ActionLink("Результаты по хар-кам трещиностойкости", "AdministrShirinaResult", "Admin")
-                    </li>
+                 
                 </ul>
             </div>
 
             <div class="col-md-2">
-                <table id="jqg"></table>
+                <table class="row" id="jqg"></table>
                 <div id="jpager"></div>
             </div>
         </div>

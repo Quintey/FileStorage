@@ -32,7 +32,7 @@ namespace FileStorage
         }
     }
 
-    // Настройка диспетчера пользователей приложения. UserManager определяется в ASP.NET Identity и используется приложением.
+    
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -40,11 +40,11 @@ namespace FileStorage
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Настройка логики проверки имен пользователей
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            manager.UserValidator = new CustomUserValidator(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -54,10 +54,10 @@ namespace FileStorage
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
 
             // Настройка параметров блокировки по умолчанию
@@ -81,12 +81,40 @@ namespace FileStorage
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
         }
     }
+
+    public class CustomUserValidator : UserValidator<ApplicationUser>
+    {
+        public CustomUserValidator(ApplicationUserManager mgr)
+            : base(mgr)
+        {
+            AllowOnlyAlphanumericUserNames = false;
+        }
+        public override async Task<IdentityResult> ValidateAsync(ApplicationUser user)
+        {
+            IdentityResult result = await base.ValidateAsync(user);
+            if (user.Email.ToLower().EndsWith("@spam.com"))
+            {
+                var errors = result.Errors.ToList();
+                errors.Add("Данный домен находится в спам-базе. Выберите другой почтовый сервис");
+                result = new IdentityResult(errors);
+            }
+            if (user.UserName.Contains("admin"))
+            {
+                var errors = result.Errors.ToList();
+                errors.Add("Ник пользователя не должен содержать слово 'admin'");
+                result = new IdentityResult(errors);
+            }
+            return result;
+        }
+    }
+
+
 
     // Настройка диспетчера входа для приложения.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>

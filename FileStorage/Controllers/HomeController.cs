@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using FileStorage.Models;
@@ -20,7 +21,7 @@ namespace FileStorage.Controllers
             return View(db.Files);
         }
 
-
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -30,15 +31,28 @@ namespace FileStorage.Controllers
         [HttpPost]
         public ActionResult Create(Models.File file, HttpPostedFileBase uploadFile)
         {
-            if (ModelState.IsValid && uploadFile != null)
+            if (ModelState.IsValid && uploadFile != null && uploadFile.ContentLength<= 20971520)
             {
                 byte[] Data = null;
 
-                using (var binaryReader = new BinaryReader(uploadFile.InputStream))
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+
+                if (claimsIdentity != null)
+                {
+                    var userIdClaim = claimsIdentity.Claims
+                        .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+                    if (userIdClaim != null)
+                    {
+                        var userIdValue = userIdClaim.Value;
+                        ViewBag.UserName = User.Identity.Name;
+                    }
+                }
+                    using (var binaryReader = new BinaryReader(uploadFile.InputStream))
                 {
                     Data = binaryReader.ReadBytes(uploadFile.ContentLength);
                 }
-
+                file.UserName = User.Identity.Name;
                 file.FileSize = (Data.Length/1024).ToString()+"KB";
                 file.NewFile = Data;
                 file.Name = uploadFile.FileName;

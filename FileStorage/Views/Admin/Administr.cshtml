@@ -33,16 +33,16 @@
     $("#jqg").jqGrid({
         url: '@Url.Action("GetData")',
         datatype: "json",
-        colNames: ['Id', 'Username', 'Email', 'EmailConfirmed','PasswordHash','PhoneNumber','PhoneNumberConfirmed','TwoFactorEnabled'],
+        colNames: ['Id', 'Логин', 'Email', 'Подтверждение Email',  'Номер телефона', 'Подтверждение номера','Двухфакторная аутентификация'],
         colModel: [
-        { name: 'Id', index: 'Id', width: 150, stype: 'text' },
+        { name: 'Id', index: 'Id', width: 50, stype: 'text' },
         { name: 'UserName', index: 'UserName', width: 150, sortable: true},
             { name: 'Email', index: 'Email', width: 150, sortable: true},
             { name: 'EmailConfirmed', index: 'EmailConfirmed', width: 80, sortable: true},
-            { name: 'PasswordHash', index: 'PasswordHash', width: 150, sortable: true},
+            
             { name: 'PhoneNumber', index: 'PhoneNumber', width: 150, sortable: true},
             { name: 'PhoneNumberConfirmed', index: 'PhoneNumberConfirmed', width: 80, sortable: true},
-            { name: 'TwoFactorEnabled', index: 'TwoFactorEnabled', width: 80, sortable: true},
+            { name: 'TwoFactorEnabled', index: 'TwoFactorEnabled', width: 150, sortable: true},
 
         ],
         rowNum: 10, // число отображаемых строк

@@ -5,38 +5,45 @@
 @model IEnumerable<FileStorage.Models.File>
 
 <p>
-    <button  onclick="location.href='@Url.Action("Create", "Home", new { ParentId = 1 })'"><div><h4>Загрузить файл </h4></div></button>
+    <button style="margin-top:20px"  onclick="location.href='@Url.Action("Create", "Home", new { ParentId = 1 })'"><div><h4>Загрузить файл </h4></div></button>
     
 </p>
-<table>
-    <tr>
-        <th>Название</th>
-        <th>Расширение</th>
-        <th>Время загрузки</th>
-        <th>Размер</th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FileExt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FileSize)
-        </td>
-        <td>
-            @Html.ActionLink("  Скачать", "DownLoadFile", new { id = item.Id })
-        </td>
+<div class="row">
+    <table class="table table-bordered table-hover table-striped">
+        <tr>
+            <th>Название</th>
+            <th>Расширение</th>
+            <th>Добавлено пользователем</th>
+            <th>Размер</th>
+            <th>Время загрузки</th>
+            <th>Загрузка</th>
 
+        </tr>
 
-    </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileExt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileSize)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.ActionLink("  Скачать", "DownLoadFile", new { id = item.Id })
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+</div>
