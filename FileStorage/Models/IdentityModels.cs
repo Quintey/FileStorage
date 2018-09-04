@@ -21,7 +21,7 @@ namespace FileStorage.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("FileContext", throwIfV1Schema: false)
         {
         }
 
