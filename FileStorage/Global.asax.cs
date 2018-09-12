@@ -15,7 +15,7 @@ namespace FileStorage
     {
         protected void Application_Start()
         {
-           // Database.SetInitializer<ApplicationDbContext>(new AppDbInitilializer());
+          // Database.SetInitializer<ApplicationDbContext>(new AppDbInitilializer());
 
 
             AreaRegistration.RegisterAllAreas();

@@ -25,7 +25,7 @@ namespace FileStorage.Models
             roleManager.Create(role2);
 
             // создаем пользователей
-            var admin = new ApplicationUser { Email = "admin@mail.ru", UserName = "admin@mail.ru" };
+            var admin = new ApplicationUser { Email = "admin@mail.ru", UserName = "admin" };
             string password = "admin1";
             var result = userManager.Create(admin, password);
 

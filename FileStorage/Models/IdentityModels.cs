@@ -25,6 +25,8 @@ namespace FileStorage.Models
         {
         }
 
+        public object Files { get; internal set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
