@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FileStorage.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI;
-using FileStorage.Models;
-using Microsoft.AspNet.Identity;
 
 namespace FileStorage.Controllers
 {
     public class HomeController : Controller
     {
         FileContext db = new FileContext();
-        
+
 
         public ActionResult Index(string sortOrder, string searchString)
         {
-            
+
             if (ModelState.IsValid)
             {
                 ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -71,19 +68,19 @@ namespace FileStorage.Controllers
                         break;
                 }
                 return View(files.ToList());
-        }
+            }
 
             return View();
 
-    }
+        }
 
-        
+
 
         [Authorize]
         [HttpPost]
         public ActionResult Create(Models.File file, HttpPostedFileBase uploadFile)
         {
-            if (ModelState.IsValid && uploadFile != null && uploadFile.ContentLength<= 20971520)
+            if (ModelState.IsValid && uploadFile != null /*&& uploadFile.ContentLength <= 20971520*/)
             {
                 byte[] Data = null;
 
@@ -91,14 +88,14 @@ namespace FileStorage.Controllers
                 {
                     Data = binaryReader.ReadBytes(uploadFile.ContentLength);
                 }
-                
+
                 var upd = (from s in db.Files
                            where s.Name == uploadFile.FileName
                            select s).FirstOrDefault();
 
-                if (upd != null )
+                if (upd != null)
                 {
-                    
+
                     upd.Name = uploadFile.FileName;
                     upd.UserName = User.Identity.GetUserName();
                     upd.FileExt = Path.GetExtension(uploadFile.FileName).ToUpper();
@@ -107,7 +104,7 @@ namespace FileStorage.Controllers
                     upd.Date = (DateTime.Now).ToString();
 
                     db.SaveChanges();
-                    
+
                 }
                 else
                 {
@@ -120,13 +117,13 @@ namespace FileStorage.Controllers
                     db.Files.Add(file);
                     db.SaveChanges();
                 }
-               
+
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Index",file);
+            return RedirectToAction("Index", file);
         }
 
-        
+
 
         [Authorize]
         [HttpGet]
