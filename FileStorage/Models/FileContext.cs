@@ -9,9 +9,13 @@ namespace FileStorage.Models
     public class FileContext : DbContext
 
     {
-        public FileContext(): base("FileContext") { }
+        public FileContext(): base("FileContext") {
+
+
+        }
 
         public DbSet<File> Files { get; set; }
+        public DbSet<Folder> Folders { get; set; }
 
     }
 }
