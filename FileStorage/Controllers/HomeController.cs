@@ -26,6 +26,8 @@ namespace FileStorage.Controllers
                 var files = from s in db.Files
                             select s;
 
+
+
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     files = files.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper())
