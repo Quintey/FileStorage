@@ -13,22 +13,35 @@ namespace FileStorage.Controllers
         FileContext db = new FileContext();
 
 
+        public ActionResult  GetRootFolder()
+        {
+            var Folders = from s in db.Folders
+                          select s;
+
+            return View(Folders.ToList());
+        }
+
+
+
+
         public ActionResult Index(string sortOrder, string searchString)
         {
 
             if (ModelState.IsValid)
             {
+               
+
                 ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
                 ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
                 ViewBag.ExtSortParm = sortOrder == "ext" ? "ext_desc" : "ext";
                 ViewBag.UserSortParm = sortOrder == "user" ? "user_desc" : "user";
                 ViewBag.SizeSortParm = sortOrder == "size" ? "size_desc" : "size";
-                var files = from s in db.Files
+                var folder = from s in db.Folders
                             select s;
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    files = files.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper())
+                    folder = folder.Where(s => s.Files.ToUpper().Contains(searchString.ToUpper())
                         || s.UserName.ToUpper().Contains(searchString.ToUpper())
                         || s.FileExt.ToUpper().Contains(searchString.ToUpper()
                     ));
@@ -73,6 +86,15 @@ namespace FileStorage.Controllers
             return View();
 
         }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult GetRootFolder(Models.Folder folder, string addFolder )
+        {
+            
+            return RedirectToAction("Index", folder);
+        }
+
 
 
 
