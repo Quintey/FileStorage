@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using FileStorage.Models;
+using System.Data.Entity;
+using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
@@ -8,7 +10,7 @@ namespace FileStorage
     {
         protected void Application_Start()
         {
-            // Database.SetInitializer<ApplicationDbContext>(new AppDbInitilializer());
+             Database.SetInitializer<ApplicationDbContext>(new AppDbInitilializer());
 
 
             AreaRegistration.RegisterAllAreas();

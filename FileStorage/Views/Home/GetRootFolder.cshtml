@@ -1,0 +1,94 @@
+﻿@model IEnumerable<FileStorage.Models.Folder>
+
+@{
+    ViewBag.Title = "GetRootFolder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetRootFolder</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FolderName)
+        </th>
+        <th></th>
+    </tr>
+
+    
+
+</table>
+
+<div class="row" style="margin-top:20px">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Create", "Home", FormMethod.Post, new
+        {
+            enctype = "multipart/form-data",
+            onsubmit = "return checkSize(20971520)"
+        }))
+        {
+            @Html.ValidationSummary(true)
+
+        <fieldset>
+            <div class="editor-field">
+                <h4>  <input id="imagefile" type="file" name="uploadFile" /></h4>
+            </div>
+            <h4> <input type="submit" value="Загрузить" /></h4>
+            <h4> <input id="addfolder" type="submit" value="Добавить папку" name="addFolder" /></h4>
+        </fieldset>
+        }
+    </div>
+    <div class="col-md-6 h4 ">
+        @using (Html.BeginForm())
+        {
+            <p>
+                @Html.TextBox("searchString", "", new { style = " width:100%" })
+                <input type="submit" value="Искать" />
+            </p>
+        }
+    </div>
+</div>
+
+
+<div class="row">
+    <table class="table table-bordered table-hover table-striped">
+
+        <tr style="background-color:lightgrey">
+            <th>
+                @Html.ActionLink("Название", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Расширение", "Index", new { sortOrder = ViewBag.ExtSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Добавлено пользователем", "Index", new { sortOrder = ViewBag.UserSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Размер", "Index", new { sortOrder = ViewBag.SizeSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Время загрузки", "Index", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+            <th>Загрузка</th>
+            @if (User.IsInRole("admin"))
+            {
+                <th>Удалить</th>
+            }
+
+        </tr>
+       
+        @foreach (var item in Model)
+        {
+            <tr style="background-color:bisque">
+                <td>
+                    @Html.DisplayFor(modelItem => item.FolderName)
+                </td>
+             
+            </tr>
+        }
+
+    </table>
+</div>

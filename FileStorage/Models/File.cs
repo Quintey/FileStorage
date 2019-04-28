@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using System.Data.Entity;
-
-namespace FileStorage.Models
+﻿namespace FileStorage.Models
 {
-    public class File 
+    public class File
     {
         public int Id { get; set; }
-        
+
         public string Name { get; set; }
         public byte[] NewFile { get; set; }
         public string FileExt { get; set; }
